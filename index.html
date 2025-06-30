@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okaya-Suwami銀行 | プレミアムバンキング</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            // 色はすべてTailwindの既存カラーを使用するため、colorsのextendは不要に
+            boxShadow: {
+              // Tailwindの影をベースに、SBI銀行の青いテーマに合わせて調整
+              // rgba値はblue-700系とblue-500系からインスピレーション
+              'custom-light': '0 4px 12px rgba(29, 78, 216, 0.08)', // blue-700のシャドウ
+              'custom-medium': '0 6px 20px rgba(29, 78, 216, 0.15)',
+              'custom-heavy': '0 8px 25px rgba(29, 78, 216, 0.25)',
+            },
+            keyframes: {
+              slideInUp: {
+                'from': { opacity: '0', transform: 'translateY(30px)' },
+                'to': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideInDown: {
+                'from': { opacity: '0', transform: 'translateY(-20px)' },
+                'to': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scaleIn: {
+                'from': { opacity: '0', transform: 'scale(0.9)' },
+                'to': { opacity: '1', transform: 'scale(1)' },
+              },
+              pulse: {
+                '0%, 100%': { transform: 'scale(1)' },
+                '50%': { transform: 'scale(1.05)' },
+              },
+              // shimmerアニメーションはCSSでしか定義できないため、今回は省略または代替手段を検討
+              // 'shimmer': { ... },
+            },
+            animation: {
+              'slideInUp-06': 'slideInUp 0.6s ease-out forwards',
+              'slideInUp-07': 'slideInUp 0.7s ease-out forwards',
+              'slideInUp-08': 'slideInUp 0.8s ease-out forwards',
+              'slideInUp-09': 'slideInUp 0.9s ease-out forwards',
+              'slideInUp-10': 'slideInUp 1s ease-out forwards',
+              'slideInUp-11': 'slideInUp 1.1s ease-out forwards',
+              'slideInDown': 'slideInDown 0.8s ease-out forwards',
+              'scaleIn': 'scaleIn 0.4s ease-out forwards',
+              'pulse-btn': 'pulse 0.6s ease-in-out',
+              // 'shimmer': 'shimmer 3s infinite', // shimmerアニメーションもCSS定義がないため削除
+            },
+            // グラデーションはTailwindのデフォルトクラス（from-*, via-*, to-*）で表現
+            // 複雑な中間色グラデーションはCSSでカスタム定義が必要だが、今回はユーティリティクラスのみで表現できる範囲に限定
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="font-sans antialiased text-gray-800 leading-relaxed bg-sky-50 overflow-x-hidden">
+    <header class="relative overflow-hidden shadow-custom-medium animate-slideInDown bg-gradient-to-br from-blue-700 via-blue-800 to-blue-500">
+      <div class="flex justify-between items-center px-4 py-4 md:px-6 relative z-10">
+        <div class="flex items-center">
+          <button id="mail-btn" class="relative w-11 h-11 rounded-xl bg-white bg-opacity-15 backdrop-blur-sm flex items-center justify-center text-white text-lg transition-all duration-300 border border-white border-opacity-20 hover:bg-opacity-25 hover:-translate-y-0.5 shadow-lg">
+            <span class="material-icons text-xl">mail</span>
+            <span class="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-4 text-center shadow-md">3</span>
+          </button>
+        </div>
+        <div class="text-xl md:text-2xl text-white font-bold tracking-wide">Okaya-Suwami銀行</div>
+        <div class="flex gap-2">
+          <button id="help-btn" class="w-10 h-10 rounded-lg bg-white bg-opacity-15 backdrop-blur-sm flex items-center justify-center text-white text-base transition-all duration-300 border border-white border-opacity-20 hover:bg-opacity-25 hover:-translate-y-px">
+            <span class="material-icons text-lg">help_outline</span>
+          </button>
+          <button id="search-btn" class="w-10 h-10 rounded-lg bg-white bg-opacity-15 backdrop-blur-sm flex items-center justify-center text-white text-base transition-all duration-300 border border-white border-opacity-20 hover:bg-opacity-25 hover:-translate-y-px">
+            <span class="material-icons text-lg">search</span>
+          </button>
+          <button id="menu-btn" class="w-10 h-10 rounded-lg bg-white bg-opacity-15 backdrop-blur-sm flex items-center justify-center text-white text-base transition-all duration-300 border border-white border-opacity-20 hover:bg-opacity-25 hover:-translate-y-px">
+            <span class="material-icons text-lg">menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container px-4 pb-24 max-w-lg mx-auto">
+      <div class="relative overflow-hidden my-4 px-4 py-3 rounded-xl text-xs font-medium text-center animate-slideInUp-06 bg-amber-50 text-amber-700 border border-amber-300 border-l-4 border-l-amber-400">
+        <span class="material-icons align-middle text-base mr-1">build</span> システムメンテナンス：今夜23:00～翌朝5:00 | サービス一時停止予定
+      </div>
+
+      <div class="relative overflow-hidden my-4 px-4 py-3 rounded-xl text-xs font-medium text-center animate-slideInUp-06 bg-red-50 text-red-600 border border-red-300 border-l-4 border-l-red-500">
+        <span class="material-icons align-middle text-base mr-1">warning</span> 詐欺注意：「Geminiの支払いをこの口座に」は100%詐欺です！
+      </div>
+
+      <div class="flex justify-center items-center my-6 animate-slideInUp-07 account-selector">
+        <span class="text-sm text-gray-600 font-medium mr-3">メイン口座</span>
+        <button class="px-4 py-2 bg-white border-2 border-gray-200 rounded-full text-sm font-semibold text-blue-700 shadow-custom-light transition-all duration-300 hover:border-blue-500 hover:shadow-custom-medium hover:-translate-y-px">
+          円普通預金 <span class="material-icons text-base align-middle">arrow_drop_down</span>
+        </button>
+      </div>
+
+      <div class="text-center my-8 animate-slideInUp-08 balance-section-container">
+        <div class="relative overflow-hidden bg-gradient-to-br from-white to-gray-50 px-6 py-8 rounded-2xl shadow-custom-light border border-white/80">
+          <span class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-700 to-blue-500"></span>
+          <button class="absolute top-4 right-4 w-9 h-9 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-700 text-base transition-all duration-300 hover:bg-blue-500/20 hover:scale-110">
+            <span class="material-icons">visibility</span>
+          </button>
+          <div class="text-3xl font-extrabold text-blue-700 mb-2 tracking-tight" id="balance-display">¥3,395,793</div>
+          <div class="text-xs text-gray-400 font-medium uppercase tracking-wider">Available Balance</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 my-6 animate-slideInUp-09 status-bar-grid">
+        <div class="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-blue-500 text-white p-4 rounded-xl text-center shadow-custom-light transition-all duration-300 hover:-translate-y-0.5 hover:shadow-custom-medium col-span-full">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-amber-400"></span>
+          <div class="text-xs font-semibold opacity-80 mb-1 uppercase tracking-wider">プレミアムランク</div>
+          <div class="text-lg font-bold text-amber-400">★★★☆☆</div>
+        </div>
+        <div class="relative overflow-hidden bg-white p-4 rounded-xl text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-custom-medium">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500"></span>
+          <div class="text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">ATM手数料</div>
+          <div class="text-base font-bold text-blue-700">5回無料</div>
+        </div>
+        <div class="relative overflow-hidden bg-white p-4 rounded-xl text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-custom-medium">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500"></span>
+          <div class="text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">振込手数料</div>
+          <div class="text-base font-bold text-blue-700">5回無料</div>
+        </div>
+        <div class="relative overflow-hidden bg-white p-4 rounded-xl text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-custom-medium">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500"></span>
+          <div class="text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">ポイント残高</div>
+          <div class="text-base font-bold text-blue-700">5,000P</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-4 gap-4 my-8 animate-slideInUp-10 services-grid">
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">atm</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">スマートATM</span>
+          <div class="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full shadow-md ring-2 ring-white"></div>
+        </button>
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn group">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">account_balance</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">口座一覧</span>
+        </button>
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn group">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">savings</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">残高照会</span>
+        </button>
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn group">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">history</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">取引履歴</span>
+        </button>
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn group">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">send</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">振込・送金</span>
+        </button>
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn group">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">swap_horiz</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">振替</span>
+        </button>
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn group">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">person</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">プロフィール</span>
+        </button>
+        <button class="relative bg-white rounded-2xl p-3 md:p-5 text-center shadow-custom-light border border-gray-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-custom-medium animate-pulse-btn group">
+          <span class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-700 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+          <span class="material-icons text-blue-700 text-2xl md:text-3xl block mb-2">star</span>
+          <span class="text-xs font-semibold text-gray-600 leading-tight">ポイント</span>
+        </button>
+      </div>
+
+      <section class="relative overflow-hidden bg-white my-8 p-6 md:p-8 rounded-3xl shadow-custom-light border border-gray-200 animate-slideInUp-11 transfer-section">
+        <span class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-700 to-blue-500"></span>
+        <h2 class="text-xl font-bold text-blue-700 mb-6 text-center"><span class="material-icons align-middle text-2xl mr-1">diamond</span> プレミアム送金</h2>
+        <div class="mb-6">
+          <input id="to-account" class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl text-base font-medium bg-blue-50 transition-all duration-300 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-md focus:translate-y-px" type="text" placeholder="送金先口座番号（例：381022）">
+        </div>
+        <div class="mb-6">
+          <input id="amount-input" class="w-full px-5 py-4 border-2 border-gray-200 rounded-2xl text-base font-medium bg-blue-50 transition-all duration-300 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-md focus:translate-y-px" type="number" placeholder="送金額（兆単位まで対応）">
+        </div>
+        <button id="transfer-btn" class="relative overflow-hidden w-full py-4 bg-gradient-to-r from-blue-700 to-blue-500 text-white border-none rounded-2xl text-base font-bold cursor-pointer transition-all duration-300 shadow-xl hover:-translate-y-0.5 hover:shadow-custom-heavy active:translate-y-0 group">
+          <span class="material-icons text-white align-middle mr-2">send</span> 送金実行
+        </button>
+        <div id="transfer-status" class="mt-4 px-4 py-3 rounded-xl text-sm font-medium text-center min-h-5 bg-blue-100 text-blue-700 border border-blue-200"></div>
+      </section>
+    </div>
+
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-md flex justify-center items-center z-50 animate-scaleIn hidden">
+      <div class="relative bg-white px-8 py-10 rounded-3xl w-11/12 max-w-sm text-center shadow-2xl border border-gray-200 animate-slideInUp-06">
+        <button class="modal-close absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-300/20 flex items-center justify-center text-gray-400 text-xl transition-all duration-300 hover:bg-gray-300/30 hover:text-gray-800 hover:rotate-90" onclick="closeModal()">
+          <span class="material-icons text-xl">close</span>
+        </button>
+        <h2 id="modal-title" class="text-2xl font-bold text-blue-700 mb-4">メッセージ</h2>
+     <p id="modal-text"
+        class="text-xl md:text-2xl font-extrabold text-blue-800 bg-blue-50 p-4 rounded-lg leading-snug mb-6
+               shadow-custom-light animate-pulse-btn">
+     </p>
+      </div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-2xl backdrop-blur-xl z-40">
+      <div class="flex max-w-lg mx-auto">
+        <button class="nav-btn flex-1 py-3 px-2 text-center text-xs font-semibold text-gray-400 transition-all duration-300 relative bg-transparent active group">
+          <span class="material-icons block text-xl mb-1 text-blue-700">home</span>
+          ホーム
+        </button>
+        <button class="nav-btn flex-1 py-3 px-2 text-center text-xs font-semibold text-gray-400 transition-all duration-300 relative bg-transparent group">
+          <span class="material-icons block text-xl mb-1">currency_exchange</span>
+          送金
+        </button>
+        <button class="nav-btn flex-1 py-3 px-2 text-center text-xs font-semibold text-gray-400 transition-all duration-300 relative bg-transparent group">
+          <span class="material-icons block text-xl mb-1">account_balance_wallet</span>
+          口座
+        </button>
+        <button class="nav-btn flex-1 py-3 px-2 text-center text-xs font-semibold text-gray-400 transition-all duration-300 relative bg-transparent group">
+          <span class="material-icons block text-xl mb-1">card_giftcard</span>
+          特典
+        </button>
+        <button class="nav-btn flex-1 py-3 px-2 text-center text-xs font-semibold text-gray-400 transition-all duration-300 relative bg-transparent group">
+          <span class="material-icons block text-xl mb-1">menu</span>
+          メニュー
+        </button>
+      </div>
+    </nav>
+
+    <script>
+      // 送金機能（元の機能を維持）
+      function sendMoney() {
+        const toAcc = document.getElementById("to-account").value.trim();
+        const amt = parseInt(document.getElementById("amount-input").value, 10) || 0;
+        const status = document.getElementById("transfer-status");
+
+        const msgs = [
+          "送金失敗：送金先が存在しません",
+          "あんた、まさかこれで成功すると思ってんの？甘いな。",
+          "送金ぐらい自分でやってくれよ",
+          "レシートは発行できないですよ",
+          "送金中... 残高が足りません　あーまずいな",
+          "該当支店は海底に沈んでいます",
+          "インターネットがインターネットに接続できていない",
+          "送金先が複数存在します　どれですか？？",
+          "口座番号がボクの嫌いな数字です　凍結します",
+          "エラー：金額がボクの嫌いな数字です　口座を凍結します",
+          "何かを処理している　ちょいまち",
+          "今それどころじゃない！！",
+          "あなただれですか？こんなところで何してるの?",
+          "受取人があなたに会いたいと言っているのであってあげてください",
+          "ビットコインは使えないって言ったでしょ？",
+          "岡安世緯によりブロックされました",
+          "AIによる自動ブロック マネロンは犯罪です　凍結します",
+          "送金失敗：ありえないんですけど",
+          "該当口座は食べられました。",
+          "この取引はあなたに必要ありません。凍結します。",
+          "めんどくせーわ",
+          "こんなことしてないでもっとやるべきことがあるんじゃないんですか？",
+          "ちょっと黙ってろ！",
+          "サーバが昼寝中につき、しばらくお待ちください。",
+          "パスワードが弱すぎです、凍結します。",
+          "はい　凍結します!",
+          "そういのは家でやってください",
+          "うーーーーん、どうしよかなーーー",
+          "悪いが 他をあたってくれ",
+          "ここはあんたみたいなやつが来るような場所じゃないんだよ 凍結する",
+          "一旦凍結するわ",
+          "凍結",
+          "誰だか知らんが今日は帰ってくれ",
+
+        ];
+
+
+        if (toAcc === "381022") {
+          if (amt >= 100000000) {
+            status.textContent = "それでこそ我が友よ お誕生日おめでとう";
+          } else {
+            status.textContent = `そうかそうか君はそういうやつだったんだな、¥${amt.toLocaleString()}じゃ全然足りねー`;
+          }
+        } else {
+          status.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+        }
+      }
+
+      // フレンドメッセージ（元の機能を維持）
+
+      const friendMessages = [
+        "あたってくだけない",
+        "車の中のサンドウィッチ持ってこればよかったね",
+        "エンガチョ,エンガチョ",
+        "あ、あ、あ",
+        "グッドラック",
+        "忘れるな私はそなたの味方だ",
+        "辛くても耐えるんだよ",
+        "行かないで!ここにいて!",
+        "ここで働かせてください！",
+        "そなたの小さいときから知っている",
+        "夢だ！夢だ！さめろ！さめろ！さめろ！さめて……",
+        "セイ様あああああaaaaa",
+        "セイを出せ",
+        "せい いい名前だね自分の名前を大事にね",
+        "よきかな",
+        "ここ、開けときますね",
+        "送金をしてはいけないよ",
+        "振り向いちゃいけないよ",
+        "私はこの先には行けない",
+        "お客様とて許せぬ!",
+        "手ぇ出すなら、しまいまでやれ！", 
+        "まだわかりませんか？ 大切なものがすり替わったのを",
+        "チ。ワカル？チ。",
+        "前のほうがいいもん",
+        "そんなにくっつかないで",
+        "帰ろうよ",
+        "ここにいてはいけない!もう明かりが灯った!直に夜になる私が金を稼ぐ。橋の向こうまで走れ!",
+      ];
+      function showFriendModal() {
+        document.getElementById("modal-title").textContent = "セイ様";
+        document.getElementById("modal-text").textContent =
+          friendMessages[Math.floor(Math.random() * friendMessages.length)];
+        document.getElementById("message-modal").classList.remove("hidden");
+      }
+
+      function showHackModal() {
+        document.getElementById("modal-title").textContent = "🚨 セキュリティ警告";
+        document.getElementById("modal-text").textContent =
+          "ハッキングされました。口座が凍結されました。残高がすべて持っていかれました。";
+        document.getElementById("balance-display").textContent = "¥0";
+        document.getElementById("message-modal").classList.remove("hidden");
+      }
+
+      function closeModal() {
+        document.getElementById("message-modal").classList.add("hidden");
+      }
+
+      // イベントリスナー
+      window.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("button").forEach(btn => {
+          btn.addEventListener("click", e => {
+            // もし modal-close クラスなら以降の処理をスキップ
+            if (btn.classList.contains('modal-close')) {
+              e.stopPropagation();
+              return;
+            }
+            const id = btn.id;
+            if (id === "transfer-btn") {
+              sendMoney();
+            } else if (id === "mail-btn") {
+              showHackModal();
+            } else { 
+              showFriendModal();
+            }
+            e.preventDefault();
+          });
+        });
+
+        // スムーズスクロール効果
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Apply animation class when element enters viewport
+              // 要素の識別はクラス名に頼る
+              if (entry.target.classList.contains('alert-banner')) {
+                entry.target.classList.add('animate-slideInUp-06');
+              } else if (entry.target.classList.contains('account-selector')) {
+                entry.target.classList.add('animate-slideInUp-07');
+              } else if (entry.target.classList.contains('balance-section-container')) {
+                entry.target.classList.add('animate-slideInUp-08');
+              } else if (entry.target.classList.contains('status-bar-grid')) {
+                entry.target.classList.add('animate-slideInUp-09');
+              } else if (entry.target.classList.contains('services-grid')) {
+                entry.target.classList.add('animate-slideInUp-10');
+              } else if (entry.target.classList.contains('transfer-section')) {
+                entry.target.classList.add('animate-slideInUp-11');
+              }
+              observer.unobserve(entry.target); // Stop observing once animation is applied
+            }
+          });
+        }, observerOptions);
+
+        // Animation for header (always visible)
+        document.querySelector('header').classList.add('animate-slideInDown');
+
+        // アニメーション要素を監視
+        document.querySelectorAll('.alert-banner, .account-selector, .balance-section-container, .status-bar-grid, .services-grid, .transfer-section').forEach(el => {
+          observer.observe(el);
+        });
+
+        // タッチフィードバック
+        document.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('touchstart', () => {
+            btn.style.transform = 'scale(0.95)';
+          });
+
+          btn.addEventListener('touchend', () => {
+            setTimeout(() => {
+              btn.style.transform = '';
+            }, 150);
+          });
+        });
+
+        // Navigation button active state
+        document.querySelectorAll('.nav-btn').forEach(navBtn => {
+          navBtn.addEventListener('click', () => {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+              btn.classList.remove('active');
+              // activeクラスを持つボタンのアイコンの色をTailwindの色に設定
+              const icon = btn.querySelector('.material-icons');
+              if (icon) icon.classList.remove('text-blue-700');
+            });
+            navBtn.classList.add('active');
+            const icon = navBtn.querySelector('.material-icons');
+            if (icon) icon.classList.add('text-blue-700'); // アクティブなアイコンを青色に
+          });
+        });
+
+        // 初期ロード時のアクティブナビボタン
+        document.querySelector('.nav-btn.active .material-icons')?.classList.add('text-blue-700');
+      });
+    </script>
+  </body>
+</html>
